@@ -22,7 +22,7 @@ app.get('/getSessionAndToken', function(req, res) {
 	opentok.createSession(function(err, session) {
 		if (err) return console.error(err);
 		const sessionId = session.sessionId;
-		var token = opentok.generateToken(sessionId);
+		var token = session.generateToken();
 		res.json({ "sessionId": sessionId, "token": token });
 	})
 });
