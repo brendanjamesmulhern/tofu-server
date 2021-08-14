@@ -65,7 +65,12 @@ app.post('/updateVideoUrls', function(req, res) {
 			res.json("Update completed!")
 		}
 	});
+});
 
+app.get('/getAllVideoIntros', function(req, res) {
+	users.find(usersFromDB => {
+		res.json(usersFromDB);
+	})
 });
 
 http.createServer(app).listen(process.env.PORT || 8080, function () {
