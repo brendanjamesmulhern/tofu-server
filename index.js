@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 const apiKey = "47306554";
 const secret = "fb557b9b880c278439a508c66dbb85be03552739";
 
-mongoose.connect('mongodb+srv://bmulhern2:Bmole22%21%21@cluster0.eopst.mongodb.net/tofu?retryWrites=true&w=majority', { useNewUrlParser: true , useUnifiedToplogy: true }, function () {
+mongoose.connect('mongodb+srv://bmulhern2:Bmole22%21%21@cluster0.eopst.mongodb.net/tofu?retryWrites=true&w=majority', { useNewUrlParser: true , useUnifiedTopology: true }, function () {
 	console.log("MongoDB Connected.");
 })
 
