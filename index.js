@@ -32,7 +32,7 @@ let UserSchema = new mongoose.Schema({
 	}]
 });
 
-let users = mongoose.model('users', UserSChema);
+let users = mongoose.model('users', UserSchema);
 
 var opentok = new OpenTok(apiKey, secret);
 
