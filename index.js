@@ -69,6 +69,7 @@ app.post('/updateVideoUrls', function(req, res) {
 
 app.get('/getAllVideoIntros', function(req, res) {
 	users.find(usersFromDB => {
+		console.log(usersFromDB);
 		res.json(usersFromDB);
 	})
 });
