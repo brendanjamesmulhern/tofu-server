@@ -32,7 +32,7 @@ let UserSchema = new mongoose.Schema({
 	}]
 });
 
-let users = mongoose.model('users', UserSchema);
+let user = mongoose.model('user', UserSchema);
 
 var opentok = new OpenTok(apiKey, secret);
 
@@ -68,7 +68,7 @@ app.post('/updateVideoUrls', function(req, res) {
 });
 
 app.get('/getAllVideoIntros', function(req, res) {
-	users.find(usersFromDB => {
+	user.find(usersFromDB => {
 		console.log(usersFromDB);
 		res.json(usersFromDB);
 	})
