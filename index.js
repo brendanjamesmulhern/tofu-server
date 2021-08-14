@@ -61,7 +61,7 @@ app.post('/updateVideoUrls', function(req, res) {
 		} else {
 			let videos = userFromDB['videos'];
 			videos.push(newVideo);
-			videos.save();
+			userFromDB.save();
 			res.json("Update completed!")
 		}
 	});
