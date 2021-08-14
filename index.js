@@ -55,7 +55,7 @@ app.get('/getSessionAndToken', function(req, res) {
 
 app.post('/updateVideoUrls', function(req, res) {
 	let newVideo = req.body.newVideo;
-	users.findOne({ "email": req.body.email }, function (err, userFromDB) {
+	user.findOne({ "email": req.body.email }, function (err, userFromDB) {
 		if (err) {
 			res.json(err);
 		} else {
