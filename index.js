@@ -111,7 +111,11 @@ app.post('/create-subscription', async function(req, res) {
 });
 
 app.post('/book-meeting', function(req, res) {
-	res.send(req.body);
+	let mentorId = req.body.mentorId;
+	let date = req.body.date;
+	let time = req.body.time;
+	let payeeEmail = req.body.payeeEmail;
+	console.log(mentorId, date, time, payeeEmail);
 });
 
 

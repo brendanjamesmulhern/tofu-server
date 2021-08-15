@@ -8,7 +8,8 @@
     "npm": "7.6.0"
   },
   "scripts": {
-    "start": "npm i && nodemon"
+    "start": "npm i && nodemon",
+    "deploy": "bash ./build.sh"
   },
   "keywords": [],
   "author": "",
