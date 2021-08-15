@@ -115,7 +115,30 @@ app.post('/book-meeting', function(req, res) {
 	let date = req.body.date;
 	let time = req.body.time;
 	let payeeEmail = req.body.payeeEmail;
-	console.log(mentorId, date, time, payeeEmail);
+	let url = req.body.url;
+	user.findOne({ "email": payeeEmail }, function(err, payeeFromDB) {
+		user.findOne({ "_id": mentorId }, function(err, mentorFromDB) {
+			let newEvent = {
+					"url": url
+					"members": [{
+						"_id": payeeFromDB['_id'],
+						"username": payeeFromDB['username']
+					}, {
+						"_id": mentorFromDB['_id'],
+						"username": mentorFromDB['username']
+					}],
+					"date": date,
+					"time": time
+				};
+				let mentorMeetings = mentorFromDB['meetings'];
+				let payeeMeetings = payeeFromDB['meetings'];
+				mentorMeetings.push(newEvent);
+				payeeMeetings.push(newEvent);
+				mentorFromDB.save();
+				payeeFromDB.save();
+				res.json({ "event creation": "success!" });
+		});
+	});
 });
 
 
