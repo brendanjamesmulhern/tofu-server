@@ -151,15 +151,15 @@ app.post('/book-meeting', function(req, res) {
 
 app.post('/add-new-user', function(req, res) {
 	users.create({ 
-			"email": req.body.email, 
-			username: null, 
-			"teams": [], 
-			isPremium: false,
-			videos: [],
-			meetings: []
+		"email": req.body.email, 
+		username: null, 
+		"teams": [], 
+		isPremium: false,
+		videos: [],
+		meetings: []
 	}).then(response => {
 		res.json(response);
-	})
+	});
 });
 
 http.createServer(app).listen(process.env.PORT || 8080, function () {
