@@ -99,7 +99,7 @@ app.post('/create-subscription', async function(req, res) {
 			}],
 			payment_behavior: 'default_incomplete',
 			expand: ['latest_invoice.payment_intent'],
-			trail_end: date
+			trial_end: date
 		});
 		res.json({
 			subscriptionId: subscription.id,
