@@ -6,6 +6,11 @@ const http = require('http');
 const OpenTok = require('opentok');
 const mongoose = require('mongoose');
 
+const stripe_secret_test = "sk_test_51JOX0yGBUpznK6SDov78W8Jv2Xu2CH6rd1veljrt3gD3ynQXrRwq9zRKFzgc9hcWyG9yDyL01a7xE7KOC3nw2dXE000irc4x0X";
+const stripe_secret_live = "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";
+
+const stripe = require('stripe')(stripe_secret_test);
+
 const apiKey = "47306554";
 const secret = "fb557b9b880c278439a508c66dbb85be03552739";
 
@@ -77,6 +82,31 @@ app.get('/getAllVideoIntros', function(req, res) {
 		}
 	})
 });
+
+app.post('/create-subscription', async function(req, res) {
+	const customer = await stripe.customers.create({
+		email: req.body.email
+	});
+	const customerId = customer.id;
+	const priceId = req.body.priceId;
+	try {
+		const subscription = await stripe.subscriptions.create({
+			customer: customerId,
+			items: [{
+				price: priceId
+			}],
+			payment_behavior: 'default_incomplete',
+			expand: ['latest_invoice.payment_intent']
+		});
+		res.json({
+			subscriptionId: subscription.id,
+			clientSecret: subscription.latest_invoice.payment_intent.client_secret
+		});
+	} catch (error) {
+		return res.status(400).send({ error: { message: error.message }});
+	}
+});
+
 
 http.createServer(app).listen(process.env.PORT || 8080, function () {
 	console.log("Server Started on Port 8080.");
