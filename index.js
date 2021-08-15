@@ -35,6 +35,7 @@ let UserSchema = new mongoose.Schema({
 		url: String,
 
 	}],
+	isPremium: String,
 	meetings: [{
 		url: String,
 		members: [{
