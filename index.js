@@ -110,6 +110,10 @@ app.post('/create-subscription', async function(req, res) {
 	}
 });
 
+app.post('/book-meeting', function(req, res) {
+	res.send(req.body);
+});
+
 
 http.createServer(app).listen(process.env.PORT || 8080, function () {
 	console.log("Server Started on Port 8080.");
