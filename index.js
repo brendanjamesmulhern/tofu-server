@@ -150,7 +150,7 @@ app.post('/book-meeting', function(req, res) {
 });
 
 app.post('/add-new-user', function(req, res) {
-	users.create({ 
+	user.create({ 
 		"email": req.body.email, 
 		username: null, 
 		"teams": [], 
