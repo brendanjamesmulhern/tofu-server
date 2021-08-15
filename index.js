@@ -34,6 +34,14 @@ let UserSchema = new mongoose.Schema({
 		date: Date,
 		url: String,
 
+	}],
+	meetings: [{
+		url: String,
+		members: [{
+			username: String
+		}],
+		date: Date,
+		time: String
 	}]
 });
 
@@ -119,24 +127,24 @@ app.post('/book-meeting', function(req, res) {
 	user.findOne({ "email": payeeEmail }, function(err, payeeFromDB) {
 		user.findOne({ "_id": mentorId }, function(err, mentorFromDB) {
 			let newEvent = {
-					"url": url
-					"members": [{
-						"_id": payeeFromDB['_id'],
-						"username": payeeFromDB['username']
-					}, {
-						"_id": mentorFromDB['_id'],
-						"username": mentorFromDB['username']
-					}],
-					"date": date,
-					"time": time
-				};
-				let mentorMeetings = mentorFromDB['meetings'];
-				let payeeMeetings = payeeFromDB['meetings'];
-				mentorMeetings.push(newEvent);
-				payeeMeetings.push(newEvent);
-				mentorFromDB.save();
-				payeeFromDB.save();
-				res.json({ "event creation": "success!" });
+				"url": url
+				"members": [{
+					"_id": payeeFromDB['_id'],
+					"username": payeeFromDB['username']
+				}, {
+					"_id": mentorFromDB['_id'],
+					"username": mentorFromDB['username']
+				}],
+				"date": date,
+				"time": time
+			};
+			let mentorMeetings = mentorFromDB['meetings'];
+			let payeeMeetings = payeeFromDB['meetings'];
+			mentorMeetings.push(newEvent);
+			payeeMeetings.push(newEvent);
+			mentorFromDB.save();
+			payeeFromDB.save();
+			res.json({ "event creation": "success!" });
 		});
 	});
 });
