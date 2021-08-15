@@ -127,7 +127,7 @@ app.post('/book-meeting', function(req, res) {
 	user.findOne({ "email": payeeEmail }, function(err, payeeFromDB) {
 		user.findOne({ "_id": mentorId }, function(err, mentorFromDB) {
 			let newEvent = {
-				"url": url
+				"url": url,
 				"members": [{
 					"_id": payeeFromDB['_id'],
 					"username": payeeFromDB['username']
