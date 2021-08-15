@@ -89,6 +89,8 @@ app.post('/create-subscription', async function(req, res) {
 	});
 	const customerId = customer.id;
 	const priceId = req.body.priceId;
+	const date = new Date();
+	date.setDate(date.getDate() + 1);
 	try {
 		const subscription = await stripe.subscriptions.create({
 			customer: customerId,
@@ -96,7 +98,8 @@ app.post('/create-subscription', async function(req, res) {
 				price: priceId
 			}],
 			payment_behavior: 'default_incomplete',
-			expand: ['latest_invoice.payment_intent']
+			expand: ['latest_invoice.payment_intent'],
+			trail_end: date
 		});
 		res.json({
 			subscriptionId: subscription.id,
