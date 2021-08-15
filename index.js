@@ -130,7 +130,7 @@ app.post('/book-meeting', function(req, res) {
 			let newEvent = {
 				"url": url,
 				"members": [{
-					"_id": mongoose.ObjectId(payeeFromDB['_id']),
+					"_id": payeeFromDB['_id'],
 					"username": payeeFromDB['username']
 				}, {
 					"_id": mentorFromDB['_id'],
