@@ -43,7 +43,8 @@ let UserSchema = new mongoose.Schema({
 		}],
 		date: Date,
 		time: String
-	}]
+	}],
+	stripeId: String
 });
 
 let user = mongoose.model('user', UserSchema);
@@ -65,6 +66,35 @@ app.get('/getSessionAndToken', function(req, res) {
 		var token = session.generateToken();
 		res.json({ "sessionId": sessionId, "token": token });
 	})
+});
+
+app.post('/createStripeAccount', async function(req, res) {
+	const account = await stripe.accounts.create({
+		type: "standard",
+	});
+	res.json({ accountId: account.id });
+});
+
+app.post('/createStripeUrl', async function(req, res) {
+	const accountLinks = await stripe.accountLinks.create({
+		account: account.id,
+		refresh_url: 'http://localhost:3000/intros',
+		return_url: 'http://localhost:3000/onboarding',
+		type: 'account_onboarding'
+	});
+	res.json({ url: accountLinks.url });
+});
+
+app.post('/createPaymentIntent', async function(req, res) {
+	const paymentIntent = await stripe.paymentIntents.create({
+		payment_method_types: ['card'],
+		amount: req.body.price,
+		currency: 'usd',
+		application_fee_amount: 123,
+	}, {
+		stripeAccount: req.body.stripeAccount
+	});
+	res.json({ client_secret: intent.client_secret });
 });
 
 app.post('/updateVideoUrls', function(req, res) {
