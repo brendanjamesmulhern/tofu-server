@@ -187,7 +187,8 @@ app.post('/add-new-user', function(req, res) {
 		"teams": [], 
 		isPremium: false,
 		videos: [],
-		meetings: []
+		meetings: [],
+		stripeId: req.body.stripeId
 	}).then(response => {
 		res.json(response);
 	});
