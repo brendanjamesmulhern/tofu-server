@@ -88,7 +88,7 @@ app.post('/createStripeUrl', async function(req, res) {
 app.post('/createPaymentIntent', async function(req, res) {
 	const paymentIntent = await stripe.paymentIntents.create({
 		payment_method_types: ['card'],
-		amount: req.body.price,
+		amount: req.body.price * 100,
 		currency: 'usd',
 		application_fee_amount: 123,
 	}, {
