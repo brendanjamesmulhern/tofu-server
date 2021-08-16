@@ -92,9 +92,8 @@ app.post('/createPaymentIntent', async function(req, res) {
 		currency: 'usd',
 		application_fee_amount: req.body.price,
 	}, {
-		stripeAccount: req.body.accountId
+		stripeAccount: req.body.stripeId
 	});
-	console.log(req.body);
 	res.json({ client_secret: paymentIntent.client_secret });
 });
 
