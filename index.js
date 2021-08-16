@@ -94,6 +94,7 @@ app.post('/createPaymentIntent', async function(req, res) {
 	}, {
 		stripeAccount: req.body.accountId
 	});
+	console.log(req.body);
 	res.json({ client_secret: paymentIntent.client_secret });
 });
 
