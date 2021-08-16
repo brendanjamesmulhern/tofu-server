@@ -94,7 +94,7 @@ app.post('/createPaymentIntent', async function(req, res) {
 	}, {
 		stripeAccount: req.body.accountId
 	});
-	res.json({ client_secret: intent.client_secret });
+	res.json({ client_secret: paymentIntent.client_secret });
 });
 
 app.post('/updateVideoUrls', function(req, res) {
