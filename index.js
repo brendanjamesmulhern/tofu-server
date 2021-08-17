@@ -199,7 +199,7 @@ app.post('/add-new-user', function(req, res) {
 });
 
 app.post('/videoSearch', async function(req, res) {
-	users.find({ $text: { $search: req.body.term }}, function(err, videos ) {
+	user.find({ $text: { $search: req.body.term }}, function(err, videos ) {
 		if (err) {
 			res.json(err);
 		} else {
