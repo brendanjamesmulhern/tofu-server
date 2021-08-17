@@ -44,7 +44,8 @@ let UserSchema = new mongoose.Schema({
 		date: Date,
 		time: String
 	}],
-	stripeId: String
+	stripeId: String,
+	name: String
 });
 
 let user = mongoose.model('user', UserSchema);
