@@ -183,12 +183,13 @@ app.post('/book-meeting', function(req, res) {
 app.post('/add-new-user', function(req, res) {
 	user.create({ 
 		"email": req.body.email, 
-		username: null, 
+		username: req.body.username, 
 		"teams": [], 
 		isPremium: false,
 		videos: [],
 		meetings: [],
-		stripeId: req.body.stripeId
+		stripeId: req.body.stripeId,
+		name: req.body.name
 	}).then(response => {
 		res.json(response);
 	});
