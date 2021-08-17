@@ -33,7 +33,8 @@ let UserSchema = new mongoose.Schema({
 	videos: [{
 		date: Date,
 		url: String,
-		description: String
+		description: String,
+		name: String
 
 	}],
 	isPremium: Boolean,
