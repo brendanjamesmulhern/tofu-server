@@ -38,7 +38,15 @@ let UserSchema = new mongoose.Schema({
 
 	}],
 	isPremium: Boolean,
-	meetings: [{
+	meetingsHosted: [{
+		url: String,
+		members: [{
+			username: String
+		}],
+		date: Date,
+		time: String
+	}],
+	meetingsAttended: [{
 		url: String,
 		members: [{
 			username: String
@@ -172,8 +180,8 @@ app.post('/book-meeting', function(req, res) {
 				"date": date,
 				"time": time
 			};
-			let mentorMeetings = mentorFromDB['meetings'];
-			let payeeMeetings = payeeFromDB['meetings'];
+			let mentorMeetings = mentorFromDB['meetingsHosted'];
+			let payeeMeetings = payeeFromDB['meetingsAttended'];
 			mentorMeetings.push(newEvent);
 			payeeMeetings.push(newEvent);
 			mentorFromDB.save();
@@ -204,6 +212,26 @@ app.post('/videoSearch', async function(req, res) {
 			res.json(err);
 		} else {
 			res.json(videos);
+		}
+	});
+});
+
+app.post('/getMeetingsAttended', function(req, res) {
+	user.findOne({ "email": req.body.email }, function(err, userFromDB) {
+		if (err) {
+			res.json(err);
+		} else {
+			res.json(userFromDB['events']);
+		};
+	});
+});
+
+app.post('/getMeetingsHosted', function(req, res) {
+	user.findOne({ "email": req.body.email }, function(err, userFromDB) {
+		if (err) {
+			res.json(err);
+		} else {
+			res.json(userFromDB['events']);
 		}
 	});
 });
