@@ -199,8 +199,13 @@ app.post('/add-new-user', function(req, res) {
 });
 
 app.post('/videoSearch', async function(req, res) {
-	const videos = await users.find({ $text: { $search: req.body.term }});
-	res.josn(videos);
+	users.find({ $text: { $search: req.body.term }}, function(err, videos ) {
+		if (err) {
+			res.json(err);
+		} else {
+			res.json(videos);
+		}
+	});
 });
 
 http.createServer(app).listen(process.env.PORT || 8080, function () {
