@@ -221,7 +221,7 @@ app.post('/getMeetingsAttended', function(req, res) {
 		if (err) {
 			res.json(err);
 		} else {
-			res.json(userFromDB['events']);
+			res.json(userFromDB['eventsAttended']);
 		};
 	});
 });
@@ -231,7 +231,7 @@ app.post('/getMeetingsHosted', function(req, res) {
 		if (err) {
 			res.json(err);
 		} else {
-			res.json(userFromDB['events']);
+			res.json(userFromDB['eventsHosted']);
 		}
 	});
 });
