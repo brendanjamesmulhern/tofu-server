@@ -243,6 +243,16 @@ app.post('/checkIfOnboarded', async function(req, res) {
 	res.json(account);
 });
 
+app.post('/myVideos', function(req, res) {
+	user.findOne({ "email": req.body.email }, function(err, userFromDB) {
+		if (err) {
+			res.json(err);
+		} else {
+			res.json(userFromDB['videos']);
+		};
+	});
+});
+
 http.createServer(app).listen(process.env.PORT || 8080, function () {
 	console.log("Server Started on Port 8080.");
 })
