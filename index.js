@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const http = require('http');
 const OpenTok = require('opentok');
 const mongoose = require('mongoose');
+const axios = require('axios');
 
 const stripe_secret_test = "sk_test_51JOX0yGBUpznK6SDov78W8Jv2Xu2CH6rd1veljrt3gD3ynQXrRwq9zRKFzgc9hcWyG9yDyL01a7xE7KOC3nw2dXE000irc4x0X";
 const stripe_secret_live = "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";
@@ -234,6 +235,12 @@ app.post('/getMeetingsHosted', function(req, res) {
 			res.json(userFromDB['meetingsHosted']);
 		}
 	});
+});
+
+app.post('/checkIfOnboarded', async function(req, res) {
+	let accountId = req.body.accountId;
+	const account = await stripe.accounts.retrieve(accountId);
+	res.josn(account);
 });
 
 http.createServer(app).listen(process.env.PORT || 8080, function () {
