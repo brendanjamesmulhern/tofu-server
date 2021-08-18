@@ -90,8 +90,8 @@ app.post('/createStripeAccount', async function(req, res) {
 app.post('/createStripeUrl', async function(req, res) {
 	const accountLinks = await stripe.accountLinks.create({
 		account: req.body.accountId,
-		refresh_url: 'http://localhost:3000/intros',
-		return_url: 'http://localhost:3000/onboarding',
+		refresh_url: 'https://tofu-pied.vercel.app/onboarding',
+		return_url: 'https://tofu-pied.vercel.app/intros',
 		type: 'account_onboarding'
 	});
 	res.json({ url: accountLinks.url });
