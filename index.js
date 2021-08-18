@@ -248,7 +248,9 @@ app.post('/myVideos', function(req, res) {
 		if (err) {
 			res.json(err);
 		} else {
-			res.json(userFromDB['videos']);
+			if (userFromDB['videos']) {
+				res.json(userFromDB['videos']);
+			};
 		};
 	});
 });
