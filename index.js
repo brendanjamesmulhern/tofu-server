@@ -253,6 +253,25 @@ app.post('/myVideos', function(req, res) {
 	});
 });
 
+app.delete('/deleteVideo/:videoId/:email', function(req, res) {
+	let videoId = req.params.videoId;
+	let email = req.params.email;
+	user.findOne({ "email": email }, function(err, userFromDB) {
+		if (err) {
+			res.json(err);
+		} else {
+			let videos = userFromDB['videos'];
+			videos.map(video => {
+				if (video['_id'].toString() === videoId) {
+					video.remove();
+					userFromDB.save();
+				};
+			});
+			res.json("Delete Video Success.")
+		}
+	});
+});
+
 http.createServer(app).listen(process.env.PORT || 8080, function () {
 	console.log("Server Started on Port 8080.");
 })
