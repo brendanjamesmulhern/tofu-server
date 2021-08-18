@@ -88,7 +88,7 @@ app.post('/createStripeAccount', async function(req, res) {
 
 app.post('/createStripeUrl', async function(req, res) {
 	const accountLinks = await stripe.accountLinks.create({
-		account: account.id,
+		account: req.body.accountId,
 		refresh_url: 'http://localhost:3000/intros',
 		return_url: 'http://localhost:3000/onboarding',
 		type: 'account_onboarding'
