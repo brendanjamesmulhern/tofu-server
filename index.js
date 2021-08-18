@@ -127,7 +127,7 @@ app.get('/getAllVideoIntros', function(req, res) {
 		if (err) {
 			res.json(err);
 		} else {
-			console.log(response);
+			// console.log(response);
 			res.json(response);
 		}
 	})
