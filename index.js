@@ -296,7 +296,7 @@ app.post('/approveMeeting', function(req, res) {
 				if (meeting._id.toString() === meetingId) {
 					meeting['approved'] = true;
 					userFromDB.save();
-					meeting.memebers.map(member => {
+					meeting.members.map(member => {
 						if (member['username'] !== hostEmail.split("@").splice(0, 1).join("")) {
 							user.findOne({ "username": member['username'] }, function(err, attendeeFromDB) {
 								if (err) {
@@ -353,24 +353,30 @@ app.post('/disproveMeeting', function(req, res) {
 	});
 });
 
-app.post('/refundMeeting', async function(req, res) {
+app.post('/refundMeeting', function(req, res) {
 	let meetingId = req.body.meetingId;
 	let hostEmail = req.body.email;
-	user.findOne({ "email": hostEmail }, async function(err, userFromDB) {
+	user.findOne({ "email": hostEmail }, function(err, userFromDB) {
 		if (err) {
 			res.json(err);
 		} else {
 			userFromDB['meetingsHosted'].map(meeting => {
 				if (meeting['_id'].toString() === meetingId) {
-					const refund = await stripe.refunds.create({
-						payment_intent: meeting.paymentIntent
+					getStripeRefundDetails(meeting.paymentIntent).then(res => {
+						res.json(res);
 					});
-					res.json(refund);
 				};
 			});
 		};
 	});
 });
+
+async function getStripeRefundDetails(paymentIntent) {
+	const refund = await stripe.refunds.create({
+		payment_intent: paymentIntent
+	});
+	return refund;
+}
 
 http.createServer(app).listen(process.env.PORT || 8080, function () {
 	console.log("Server Started on Port 8080.");
