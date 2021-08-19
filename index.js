@@ -45,7 +45,8 @@ let UserSchema = new mongoose.Schema({
 			username: String
 		}],
 		date: Date,
-		time: String
+		time: String,
+		zone: String
 	}],
 	meetingsAttended: [{
 		url: String,
@@ -53,10 +54,12 @@ let UserSchema = new mongoose.Schema({
 			username: String
 		}],
 		date: Date,
-		time: String
+		time: String,
+		zone: String
 	}],
 	stripeId: String,
-	name: String
+	name: String,
+	hourlyRate: Number
 });
 
 let user = mongoose.model('user', UserSchema);
@@ -167,6 +170,7 @@ app.post('/book-meeting', function(req, res) {
 	let time = req.body.time;
 	let payeeEmail = req.body.payeeEmail;
 	let url = req.body.url;
+	let zone= req.body.zone;
 	user.findOne({ "email": payeeEmail }, function(err, payeeFromDB) {
 		user.findOne({ "_id": mentorId }, function(err, mentorFromDB) {
 			let newEvent = {
@@ -179,7 +183,8 @@ app.post('/book-meeting', function(req, res) {
 					"username": mentorFromDB['username']
 				}],
 				"date": date,
-				"time": time
+				"time": time,
+				"zone": zone
 			};
 			let mentorMeetings = mentorFromDB['meetingsHosted'];
 			let payeeMeetings = payeeFromDB['meetingsAttended'];
@@ -201,7 +206,8 @@ app.post('/add-new-user', function(req, res) {
 		"videos": [],
 		"meetings": [],
 		"stripeId": req.body.stripeId,
-		"name": req.body.name
+		"name": req.body.name,
+		"hourlyRate": 50
 	}).then(response => {
 		res.json(response);
 	});
