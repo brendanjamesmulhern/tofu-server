@@ -328,9 +328,9 @@ app.post('/disproveMeeting', function(req, res) {
 		} else {
 			userFromDB['meetingsHosted'].map(meeting => {
 				if (meeting['_id'].toString() === meetingId) {
-					metting['approved'] = false;
+					meeting['approved'] = false;
 					userFromDB.save();
-					meeting.meeting.map(member => {
+					meeting.members.map(member => {
 						if (member['username'] !== hostEmail.split('@').splice(0, 1).join("")) {
 							user.findOne({ "username": member['username'] }, function(err, attendeeFromDB) {
 								if (err) {
