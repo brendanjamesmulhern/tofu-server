@@ -46,7 +46,9 @@ let UserSchema = new mongoose.Schema({
 		}],
 		date: Date,
 		time: String,
-		zone: String
+		zone: String,
+		approved: Boolean,
+		paymentIntent: String
 	}],
 	meetingsAttended: [{
 		url: String,
@@ -55,7 +57,9 @@ let UserSchema = new mongoose.Schema({
 		}],
 		date: Date,
 		time: String,
-		zone: String
+		zone: String,
+		approved: Boolean,
+		paymentIntent: String
 	}],
 	stripeId: String,
 	name: String,
@@ -184,7 +188,8 @@ app.post('/book-meeting', function(req, res) {
 				}],
 				"date": date,
 				"time": time,
-				"zone": zone
+				"zone": zone,
+				"approved": false
 			};
 			let mentorMeetings = mentorFromDB['meetingsHosted'];
 			let payeeMeetings = payeeFromDB['meetingsAttended'];
@@ -207,7 +212,7 @@ app.post('/add-new-user', function(req, res) {
 		"meetings": [],
 		"stripeId": req.body.stripeId,
 		"name": req.body.name,
-		"hourlyRate": 50
+		"hourlyRate": req.body.hourlyRate || 50
 	}).then(response => {
 		res.json(response);
 	});
@@ -277,6 +282,93 @@ app.delete('/deleteVideo/:videoId/:email', function(req, res) {
 			});
 			res.json("Delete Video Success.")
 		}
+	});
+});
+
+app.post('/approveMeeting', function(req, res) {
+	let meetingId = req.body.meetingId;
+	let hostEmail = req.body.email;
+	user.findOne({ "email": hostEmail }, function(err, userFromDB) {
+		if (err) {
+			res.json(err);
+		} else {
+			userFromDB['meetingsHosted'].map(meeting => {
+				if (meeting._id.toString() === meetingId) {
+					meeting['approved'] = true;
+					userFromDB.save();
+					meeting.memebers.map(member => {
+						if (member['username'] !== hostEmail.split("@").splice(0, 1).join("")) {
+							user.findOne({ "username": member['username'] }, function(err, attendeeFromDB) {
+								if (err) {
+									res.json(err);
+								} else {
+									attendeeFromDB['meetingsAttended'].map(attendedMeeting => {
+										if (attendedMeeting['_id'].toString === meetingId) {
+											attendedMeeting['approved'] = true;
+											attendeeFromDB.save();
+											res.json("Approved Meeting!");
+										};
+									});
+								};
+							});
+						};
+					});
+				};		
+			});
+		};
+	});
+});
+
+app.post('/disproveMeeting', function(req, res) {
+	let meetingId = req.body.meetingId;
+	let hostEmail = req.body.email;
+	user.findOne({ "email": hostEmail }, function(err, userFromDB) {
+		if (err) {
+			res.json(err);
+		} else {
+			userFromDB['meetingsHosted'].map(meeting => {
+				if (meeting['_id'].toString() === meetingId) {
+					metting['approved'] = false;
+					userFromDB.save();
+					meeting.meeting.map(member => {
+						if (member['username'] !== hostEmail.split('@').splice(0, 1).join("")) {
+							user.findOne({ "username": member['username'] }, function(err, attendeeFromDB) {
+								if (err) {
+									res.json(err);
+								} else {
+									attendeeFromDB['meetingsAttended'].map(attendedMeeting => {
+										if (attendedMeeting['_id'].toString() === meetingId) {
+											attendedMeeting['_id'].toString() = false;
+											attendeeFromDB.save();
+											res.json("Disproved Meeting!");
+										}
+									});
+								}
+							});
+						};
+					});
+				};
+			});
+		};
+	});
+});
+
+app.post('/refundMeeting', async function(req, res) {
+	let meetingId = req.body.meetingId;
+	let hostEmail = req.body.email;
+	user.findOne({ "email": hostEmail }, async function(err, userFromDB) {
+		if (err) {
+			res.json(err);
+		} else {
+			userFromDB['meetingsHosted'].map(meeting => {
+				if (meeting['_id'].toString() === meetingId) {
+					const refund = await stripe.refunds.create({
+						payment_intent: meeting.paymentIntent
+					});
+					res.json(refund);
+				};
+			});
+		};
 	});
 });
 
