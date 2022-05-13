@@ -7,15 +7,12 @@ const OpenTok = require('opentok');
 const mongoose = require('mongoose');
 const axios = require('axios');
 
-const stripe_secret_test = "sk_test_51JOX0yGBUpznK6SDov78W8Jv2Xu2CH6rd1veljrt3gD3ynQXrRwq9zRKFzgc9hcWyG9yDyL01a7xE7KOC3nw2dXE000irc4x0X";
-const stripe_secret_live = "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";
+const stripe_secret_test = "";
+const stripe_secret_live = "";
 
 const stripe = require('stripe')(stripe_secret_live);
 
-const apiKey = "47306554";
-const secret = "fb557b9b880c278439a508c66dbb85be03552739";
-
-mongoose.connect('mongodb+srv://bmulhern2:Bmole22%21%21@cluster0.eopst.mongodb.net/tofu?retryWrites=true&w=majority', { useNewUrlParser: true , useUnifiedTopology: true }, function () {
+mongoose.connect('', { useNewUrlParser: true , useUnifiedTopology: true }, function () {
 	console.log("MongoDB Connected.");
 })
 
